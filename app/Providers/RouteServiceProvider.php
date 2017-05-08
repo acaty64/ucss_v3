@@ -39,16 +39,14 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapMasterRoutes();
+
+        $this->mapConsultaRoutes();
+        
         //
     }
 
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
+
     protected function mapWebRoutes()
     {
         Route::group([
@@ -59,13 +57,28 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
+    protected function mapMasterRoutes()
+    {
+        Route::group([
+            'middleware' => 'master',
+            'namespace' => $this->namespace,
+            'prefix' => 'master',
+        ], function ($router) {
+            require base_path('routes/master.php');
+        });
+    }
+
+    protected function mapConsultaRoutes()
+    {
+        Route::group([
+            'middleware' => 'consulta',
+            'namespace' => $this->namespace,
+            'prefix' => 'consulta',
+        ], function ($router) {
+            require base_path('routes/consulta.php');
+        });
+    }
+
     protected function mapApiRoutes()
     {
         Route::group([
